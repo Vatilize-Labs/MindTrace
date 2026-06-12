@@ -1,4 +1,4 @@
-import { SorobanRpc } from '@stellar/js-sdk';
+import StellarSdk from 'stellar-sdk';
 
 // Configure your Soroban RPC server
 const SOROBAN_RPC_URL =
@@ -6,7 +6,7 @@ const SOROBAN_RPC_URL =
 const CONTRACT_ID =
   import.meta.env.VITE_CONTRACT_ID || '';
 
-export const sorobanClient = new SorobanRpc.Server(SOROBAN_RPC_URL);
+export const sorobanClient = new StellarSdk.SorobanRpc.Server(SOROBAN_RPC_URL);
 
 export const getContractId = (): string => {
   if (!CONTRACT_ID) {
