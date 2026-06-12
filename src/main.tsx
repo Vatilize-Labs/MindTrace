@@ -2,17 +2,12 @@
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
-import { PuzzleWalletProvider } from '@puzzlehq/sdk';
+import { StellarWalletProvider } from './context/StellarWalletContext';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <div className='h-screen w-screen'>
-    <PuzzleWalletProvider
-      dAppName="Who's your guy?"
-      dAppDescription='Inspired by the puzzle game'
-      dAppUrl='https://who-is-your-guy.vercel.app/'
-      dAppIconURL='https://who-is-your-guy.vercel.app/alex_head.png'
-    >
+    <StellarWalletProvider>
       <App />
-    </PuzzleWalletProvider>
+    </StellarWalletProvider>
   </div>
 );

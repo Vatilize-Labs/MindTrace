@@ -1,0 +1,1 @@
+/home/nonso/MindTrace/soroban/target/wasm32-unknown-unknown/release/mindtrace_soroban.wasm: /home/nonso/MindTrace/soroban/src/events.rs /home/nonso/MindTrace/soroban/src/game_state.rs /home/nonso/MindTrace/soroban/src/lib.rs

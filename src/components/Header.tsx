@@ -1,17 +1,22 @@
-import { useDisconnect, shortenAddress, useAccount } from '@puzzlehq/sdk';
+import { useStellarWallet } from '../context/StellarWalletContext';
 import Button from './Button';
 import { useGameStore } from '@state/gameStore';
 import { useNavigate } from 'react-router-dom';
 import whoIsYourGuyImg from '../assets/logo.png'
 
+// Helper to shorten address
+const shortenAddress = (address: string) => {
+  if (!address) return '';
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+};
+
 export const AppHeader = () => {
-  const { account } = useAccount();
-  const { disconnect, loading } = useDisconnect();
+  const { account, disconnect, loading } = useStellarWallet();
   const navigate = useNavigate();
 
   return (
     <div className='flex w-full items-stretch justify-between gap-5  p-4'>
-      {account && account.address ? (
+      {account ? (
         <>
           <button
             onClick={() => {
@@ -34,7 +39,7 @@ export const AppHeader = () => {
             onClick={disconnect}
             disabled={loading}
           >
-            {shortenAddress(account.address)}
+            {shortenAddress(account)}
           </Button>
         </>
       ) : (

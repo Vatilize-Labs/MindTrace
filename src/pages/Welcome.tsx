@@ -1,4 +1,4 @@
-import { useConnect, useAccount } from '@puzzlehq/sdk';
+import { useStellarWallet } from '../context/StellarWalletContext';
 import rightImageSrc from '../assets/logo.png';
 import leftImageSrc from '../assets/who_your_guy.jpeg';
 import bottomImageSrc from '../assets/new_guy.png';
@@ -8,8 +8,7 @@ import Button from '@components/Button.js';
 
 export const Welcome = () => {
   const navigate = useNavigate();
-  const { account } = useAccount();
-  const { loading, connect } = useConnect();
+  const { account, loading, connect, error } = useStellarWallet();
 
   useEffect(() => {
     if (account) {
@@ -36,17 +35,33 @@ export const Welcome = () => {
           YOUR GUY?
         </h1>
         <p className='z-10 mb-8 mt-8 max-w-[400px] text-center text-base font-bold tracking-tight text-primary-white'>
-          A thrilling game showcasing the power of Aleo and the Puzzle
-          multiparty privacy stack through a wager between friends!
+          A thrilling game on Stellar Soroban - challenge friends and win rewards!
         </p>
+        {error && (
+          <p className='z-10 mb-4 max-w-[400px] text-center text-sm font-semibold text-red-400'>
+            {error}
+          </p>
+        )}
         <Button
           className='max-w-[250px]'
           onClick={connect}
           color='yellow'
           disabled={loading}
         >
-          {loading ? 'Loading...' : loading ? 'Connecting...' : 'Play!'}
+          {loading ? 'Connecting...' : 'Play!'}
         </Button>
+        <p className='z-10 mt-6 text-center text-xs text-gray-400'>
+          Requires Freighter Wallet
+          <br />
+          <a
+            href='https://www.freighter.app/'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='text-blue-400 hover:underline'
+          >
+            Install Freighter
+          </a>
+        </p>
         <img
           src={bottomImageSrc}
           alt='Bottom Alex'

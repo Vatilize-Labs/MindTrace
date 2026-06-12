@@ -6,9 +6,9 @@ import GameStarted from './_05_GameStarted';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Step, useNewGameStore } from './store';
 import { useEffect } from 'react';
-import { useInitCurrentGame } from '@hooks/currentGame';
-import { useEventHandling } from '@hooks/eventHandling';
-import { useAccount } from '@puzzlehq/sdk';
+import { useStellarWallet } from '@context/StellarWalletContext';
+// import { useInitCurrentGame } from '@hooks/currentGame';
+// import { useEventHandling } from '@hooks/eventHandling';
 
 const NewGame = () => {
   const navigate = useNavigate();
@@ -21,11 +21,11 @@ const NewGame = () => {
     state.setStep,
   ]);
 
-  const { account } = useAccount();
+  const { account } = useStellarWallet();
 
   useEffect(() => {
     if (!account) return;
-    setInputs({ ...inputs, challenger: account.address });
+    setInputs({ ...inputs, challenger: account });
   }, [account])
 
   const done = () => {
@@ -36,7 +36,8 @@ const NewGame = () => {
 
   const [searchParams] = useSearchParams();
 
-  useInitCurrentGame();
+  // TODO: Re-enable when converting to Soroban
+  // useInitCurrentGame();
   useEffect(() => {
     const _eventId = searchParams.get('eventId');
     if (_eventId) {
@@ -44,11 +45,12 @@ const NewGame = () => {
     }
   }, [searchParams]);
 
-  useEventHandling({
-    id: eventId,
-    stepName: 'New Game Index',
-    onSettled: () => setStep(Step._05_GameStarted),
-  });
+  // TODO: Re-enable event handling for Soroban
+  // useEventHandling({
+  //   id: eventId,
+  //   stepName: 'New Game Index',
+  //   onSettled: () => setStep(Step._05_GameStarted),
+  // });
 
   return (
     <div className='flex h-full w-full flex-col'>

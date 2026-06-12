@@ -1,30 +1,15 @@
-import { useAccount } from '@puzzlehq/sdk';
 import { useEffect } from 'react';
-import { useGameStore } from '@state/gameStore';
-import { useGameRecords } from './records';
+import { useStellarWallet } from '@context/StellarWalletContext';
 
 export const useInitGame = () => {
-  const { account } = useAccount();
-
-  const [setRecords] = useGameStore((state) => [state.setRecords]);
-
-  const { gameNotifications, puzzleRecords, utilRecords } = useGameRecords();
+  const { account } = useStellarWallet();
 
   useEffect(() => {
-    if (
-      gameNotifications !== undefined &&
-      puzzleRecords !== undefined &&
-      utilRecords !== undefined &&
-      account
-    ) {
-      setRecords(account.address, {
-        gameNotifications,
-        puzzleRecords,
-        utilRecords,
-      });
+    if (account) {
+      // Initialize game for Stellar account
+      // For Stellar/Soroban, game records will be fetched from contract state
+      // This is handled separately in game components via Soroban RPC
+      console.log('Game initialized for account:', account);
     }
-  }, [
-    [gameNotifications, puzzleRecords, utilRecords].toString(),
-    account?.address,
-  ]);
+  }, [account]);
 };

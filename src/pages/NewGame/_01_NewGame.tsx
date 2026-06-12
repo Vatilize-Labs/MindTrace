@@ -2,7 +2,7 @@
 import Nav from '@components/Nav';
 import PageHeader from '@components/PageHeader';
 import Button from '@components/Button';
-import { useAccount } from '@puzzlehq/sdk';
+import { useStellarWallet } from '@context/StellarWalletContext';
 import { aleoAddressRegex } from '../../utils.js';
 import { Step, useNewGameStore } from './store.js';
 
@@ -12,7 +12,7 @@ function NewGame() {
     state.setInputs,
     state.setStep,
   ]);
-  const { account } = useAccount();
+  const { account } = useStellarWallet();
 
   const opponent = inputs?.opponent;
 
@@ -42,7 +42,7 @@ function NewGame() {
           !inputs ||
           !account ||
           !aleoAddressRegex.test(inputs.opponent ?? '') ||
-          inputs.opponent === account.address
+          inputs.opponent === account
         }
       >
         NEXT

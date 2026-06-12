@@ -16,6 +16,8 @@ const pagesDir = resolve(root, './pages');
 const componentsDir = resolve(root, './components');
 const stateDir = resolve(root, './state');
 const hooksDir = resolve(root, './hooks');
+const contextDir = resolve(root, './context');
+const utilsDir = resolve(root, './utils');
 
 export default defineConfig({
   define: {
@@ -29,6 +31,8 @@ export default defineConfig({
       '@components': componentsDir,
       '@state': stateDir,
       '@hooks': hooksDir,
+      '@context': contextDir,
+      '@utils': utilsDir,
     },
   },
   plugins: [react(), liveReload('.path'), wasm()],

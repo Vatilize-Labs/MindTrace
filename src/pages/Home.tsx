@@ -5,7 +5,7 @@ import TheirTurn from '@components/TheirTurn';
 import YourTurn from '@components/YourTurn';
 import { useGameStore } from '@state/gameStore';
 import { useNewGameStore } from './NewGame/store';
-import { useAccount } from '@puzzlehq/sdk';
+import { useStellarWallet } from '@context/StellarWalletContext';
 
 function Home() {
   const [yourTurn, theirTurn, totalBalance] = useGameStore((state) => [
@@ -14,7 +14,7 @@ function Home() {
     state.totalBalance,
   ]);
   const [initialize] = useNewGameStore((state) => [state.initialize]);
-  const { account } = useAccount();
+  const { account } = useStellarWallet();
   const navigate = useNavigate();
 
   return (
@@ -25,7 +25,7 @@ function Home() {
           color='yellow'
           onClick={() => {
             if (!account) return;
-            initialize(account?.address);
+            initialize(account);
             navigate('/new-game');
           }}
           disabled={!account}
