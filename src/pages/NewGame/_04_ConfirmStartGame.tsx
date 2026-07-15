@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import Versus from '@components/Versus.js';
 import PageHeader from '@components/PageHeader.js';
 import Wager from '@components/Wager.js';

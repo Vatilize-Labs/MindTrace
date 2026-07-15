@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import GameInfo from '@components/GameInfo.js';
 import Button from '@components/Button.js';
 import { useNewGameStore } from './store';

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import Nav from '@components/Nav';
 import PageHeader from '@components/PageHeader';
 import Button from '@components/Button';

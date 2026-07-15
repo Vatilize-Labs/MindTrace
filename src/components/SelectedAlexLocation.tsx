@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import tiwaImg from '../assets/tiwa.jpg';
 import spyroImg from '../assets/spyro.jpg';
 import { Answer } from '@state/RecordTypes/wheres_alex_vxxx.js';

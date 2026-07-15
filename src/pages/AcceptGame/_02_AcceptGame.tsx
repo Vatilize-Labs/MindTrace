@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import PageHeader from '@components/PageHeader';
 import Nav from '@components/Nav';
 import ChooseAlexLocation from '@components/ChooseAlexLocation';
