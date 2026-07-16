@@ -40,34 +40,4 @@ jobs:
           name: frontend-dist
           path: dist
           retention-days: 7
-
-  contract:
-    name: Soroban contract (test, build wasm)
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: soroban
-    steps:
-      - uses: actions/checkout@v4
-
-      # Keep in sync with soroban/rust-toolchain.toml
-      - uses: dtolnay/rust-toolchain@1.95.0
-        with:
-          targets: wasm32-unknown-unknown
-
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: soroban
-
-      - name: Test
-        run: cargo test
-
-      - name: Build wasm
-        run: cargo build --target wasm32-unknown-unknown --release
-
-      - name: Upload contract wasm
-        uses: actions/upload-artifact@v4
-        with:
-          name: mindtrace-soroban-wasm
-          path: soroban/target/wasm32-unknown-unknown/release/mindtrace_soroban.wasm
-          retention-days: 7
+  # The Soroban contract lives in Vatilize-Labs/smart-contract and has its own CI.
