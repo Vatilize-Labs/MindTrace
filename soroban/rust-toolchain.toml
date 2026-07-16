@@ -1,0 +1,6 @@
+# Pinned: soroban-env-common 20.x requires ethnum =1.5.0, which fails to
+# compile on rustc >= 1.97 (transmute in ethnum::error). Bump this together
+# with a soroban-sdk upgrade.
+[toolchain]
+channel = "1.95.0"
+targets = ["wasm32-unknown-unknown"]
