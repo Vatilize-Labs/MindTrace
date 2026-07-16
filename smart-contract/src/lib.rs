@@ -1,5 +1,5 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, symbol_short, vec, Address, Env, Symbol, Vec, String};
+use soroban_sdk::{contract, contractimpl, symbol_short, Address, Env, String};
 
 mod game_state;
 mod events;
@@ -7,7 +7,7 @@ mod events;
 #[cfg(test)]
 mod test;
 
-use game_state::{Game, GameState, Player};
+use game_state::Game;
 use events::{GameProposed, GameAccepted, GameRevealed, GameFinished};
 
 pub const GAME_STATE_PROPOSED: i128 = 1;
@@ -305,7 +305,7 @@ impl MindtraceContract {
 }
 
 /// Generate a unique game ID using addresses and sequence number
-fn generate_game_id(_env: &Env, challenger: &Address, opponent: &Address) -> String {
+fn generate_game_id(_env: &Env, _challenger: &Address, opponent: &Address) -> String {
     // Use opponent address as game ID (address is globally unique)
     // In production, combine with timestamp/sequence for additional uniqueness
     opponent.to_string()

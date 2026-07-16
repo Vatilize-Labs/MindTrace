@@ -27,17 +27,5 @@ pub struct Game {
     pub accepted_at: u64,
 }
 
-pub enum GameState {
-    Proposed = 1,
-    WagerMatched = 2,
-    Accepted = 3,
-    Revealed = 4,
-    Finished = 5,
-    Timeout = 6,
-    Reneged = 0,
-}
-
-pub enum Player {
-    Challenger,
-    Opponent,
-}
+// Game states are represented as i128 constants in lib.rs
+// (GAME_STATE_*) so they round-trip through Game.state directly.
