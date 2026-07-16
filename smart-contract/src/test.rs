@@ -16,7 +16,7 @@ impl GameTest<'_> {
     fn setup() -> Self {
         let env = Env::default();
         env.mock_all_auths();
-        let contract_id = env.register_contract(None, MindtraceContract);
+        let contract_id = env.register(MindtraceContract, ());
         let client = MindtraceContractClient::new(&env, &contract_id);
         let challenger = Address::generate(&env);
         let opponent = Address::generate(&env);
@@ -102,6 +102,61 @@ fn challenger_wins_reveal_when_guess_differs() {
     let winner = t.client.reveal_answer(&game_id);
 
     assert_eq!(winner, t.challenger);
+}
+
+#[test]
+fn propose_game_rejects_non_binary_answer() {
+    let t = GameTest::setup();
+    assert!(t.client.try_propose_game(&t.challenger, &t.opponent, &100, &2).is_err());
+}
+
+#[test]
+fn propose_game_rejects_zero_wager() {
+    let t = GameTest::setup();
+    assert!(t.client.try_propose_game(&t.challenger, &t.opponent, &0, &1).is_err());
+}
+
+#[test]
+fn submit_wager_rejects_mismatched_amount() {
+    let t = GameTest::setup();
+    let game_id = t.client.propose_game(&t.challenger, &t.opponent, &100, &1);
+    assert!(t.client.try_submit_wager(&game_id, &t.opponent, &50, &0).is_err());
+}
+
+#[test]
+fn submit_wager_rejects_wrong_opponent() {
+    let t = GameTest::setup();
+    let game_id = t.client.propose_game(&t.challenger, &t.opponent, &100, &1);
+    let intruder = Address::generate(&t.env);
+    assert!(t.client.try_submit_wager(&game_id, &intruder, &100, &0).is_err());
+}
+
+#[test]
+fn accept_game_requires_matched_wager() {
+    let t = GameTest::setup();
+    let game_id = t.client.propose_game(&t.challenger, &t.opponent, &100, &1);
+    assert!(t.client.try_accept_game(&game_id).is_err());
+}
+
+#[test]
+fn reveal_answer_requires_accepted_state() {
+    let t = GameTest::setup();
+    let game_id = t.propose_and_match(1, 0);
+    assert!(t.client.try_reveal_answer(&game_id).is_err());
+}
+
+#[test]
+fn finish_game_requires_revealed_state() {
+    let t = GameTest::setup();
+    let game_id = t.propose_and_match(1, 0);
+    t.client.accept_game(&game_id);
+    assert!(t.client.try_finish_game(&game_id, &t.token).is_err());
+}
+
+#[test]
+fn get_game_panics_for_unknown_id() {
+    let t = GameTest::setup();
+    assert!(t.client.try_get_game(&String::from_str(&t.env, "no-such-game")).is_err());
 }
 
 #[test]
