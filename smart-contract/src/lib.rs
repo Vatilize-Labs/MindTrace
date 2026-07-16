@@ -4,6 +4,9 @@ use soroban_sdk::{contract, contractimpl, symbol_short, vec, Address, Env, Symbo
 mod game_state;
 mod events;
 
+#[cfg(test)]
+mod test;
+
 use game_state::{Game, GameState, Player};
 use events::{GameProposed, GameAccepted, GameRevealed, GameFinished};
 
