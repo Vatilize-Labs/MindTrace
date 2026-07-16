@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Welcome to **MindTrace** — a strategic social deduction game built on the Aleo blockchain. At its core, MindTrace blends psychological gameplay with privacy-first infrastructure, creating a competitive environment where players conceal identities, challenge assumptions, and outthink their opponents.
+Welcome to **MindTrace** — a strategic social deduction game built on the Stellar blockchain. At its core, MindTrace blends psychological gameplay with privacy-first infrastructure, creating a competitive environment where players conceal identities, challenge assumptions, and outthink their opponents.
 
 Unlike traditional guessing games, MindTrace operates entirely within a private on-chain context. Every move, stake, and outcome is shielded, giving players the freedom to engage at any level without external visibility or bias.
 
@@ -52,7 +52,7 @@ Each match creates a shared yet selectively private environment:
 
 ## 🎯 Purpose of the Game
 
-* Compete with others in the Aleo ecosystem
+* Compete with others in the Stellar ecosystem
 * Test your reasoning and deception skills
 * Earn rewards through successful deduction
 * Explore the future of private on-chain gaming
@@ -126,7 +126,7 @@ In traditional systems, players rely on trust in a platform. MindTrace removes t
 
 ### 2. Reliable Information Flow
 
-Actions between players must be verifiable and correctly executed. By operating on Aleo, every interaction is recorded and provable without exposing content.
+Actions between players must be verifiable and correctly executed. By operating on Stellar, every interaction is recorded and provable on-chain.
 
 ---
 
