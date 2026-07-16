@@ -18,7 +18,7 @@ pub const GAME_STATE_FINISHED: i128 = 5;
 pub const GAME_STATE_TIMEOUT: i128 = 6;
 pub const GAME_STATE_RENEGED: i128 = 0;
 
-pub const TIMEOUT_BLOCKS: u32 = 10_000; // ~83 minutes at ~0.5s per block
+pub const TIMEOUT_SECONDS: u64 = 5_000; // ~83 minutes
 
 #[contract]
 pub struct MindtraceContract;
@@ -216,10 +216,12 @@ impl MindtraceContract {
 
         assert_eq!(game.state, GAME_STATE_ACCEPTED, "Can only timeout from accepted state");
 
-        // Check if enough blocks have passed
-        let current_block = env.ledger().sequence();
-        let blocks_since_accept = current_block.saturating_sub(game.accepted_at as u32);
-        assert!(blocks_since_accept > TIMEOUT_BLOCKS, "Timeout not yet reached");
+        // Check if enough time has passed since the game was accepted.
+        // accepted_at is a ledger timestamp, so the comparison must use
+        // timestamps too — comparing against the ledger sequence number
+        // (as this originally did) can never trigger with real ledger values.
+        let elapsed = env.ledger().timestamp().saturating_sub(game.accepted_at);
+        assert!(elapsed > TIMEOUT_SECONDS, "Timeout not yet reached");
 
         // Opponent wins on timeout
         let winner = game.opponent.clone();
