@@ -1,5 +1,11 @@
 # Building & Deploying MindTrace on Stellar Soroban
 
+> **Note:** The Soroban contract has moved to its own repository:
+> <https://github.com/Vatilize-Labs/smart-contract>. Contract build/deploy
+> commands below run from that repo's root — paths like `soroban/` or
+> `cd soroban` refer to the old monorepo layout.
+
+
 ## Prerequisites
 
 1. **Rust & Cargo** (1.70+)

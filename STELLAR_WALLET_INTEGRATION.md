@@ -1,5 +1,11 @@
 # Stellar Wallet Integration Guide
 
+> **Note:** The Soroban contract has moved to its own repository:
+> <https://github.com/Vatilize-Labs/smart-contract>. Contract build/deploy
+> commands below run from that repo's root — paths like `soroban/` or
+> `cd soroban` refer to the old monorepo layout.
+
+
 ## Overview
 
 The MindTrace frontend now supports **Stellar wallets** instead of the previous Puzzle wallet integration. This enables seamless interaction with your Soroban smart contract on the Stellar network.
