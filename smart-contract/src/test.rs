@@ -1,7 +1,7 @@
 #![cfg(test)]
 
 use super::*;
-use soroban_sdk::testutils::Address as _;
+use soroban_sdk::testutils::{Address as _, Ledger};
 use soroban_sdk::{Address, Env};
 
 struct GameTest<'a> {
@@ -157,6 +157,109 @@ fn finish_game_requires_revealed_state() {
 fn get_game_panics_for_unknown_id() {
     let t = GameTest::setup();
     assert!(t.client.try_get_game(&String::from_str(&t.env, "no-such-game")).is_err());
+}
+
+#[test]
+fn challenger_can_renege_before_wager_matched() {
+    let t = GameTest::setup();
+    let game_id = t.client.propose_game(&t.challenger, &t.opponent, &100, &1);
+
+    t.client
+        .challenger_renege_stake(&game_id, &t.challenger, &t.token);
+
+    assert_eq!(t.client.get_game(&game_id).state, GAME_STATE_RENEGED);
+}
+
+#[test]
+fn challenger_cannot_renege_after_wager_matched() {
+    let t = GameTest::setup();
+    let game_id = t.propose_and_match(1, 0);
+
+    assert!(t
+        .client
+        .try_challenger_renege_stake(&game_id, &t.challenger, &t.token)
+        .is_err());
+}
+
+#[test]
+fn opponent_can_renege_after_matching_wager() {
+    let t = GameTest::setup();
+    let game_id = t.propose_and_match(1, 0);
+
+    t.client
+        .opponent_renege_stake(&game_id, &t.opponent, &t.token);
+
+    assert_eq!(t.client.get_game(&game_id).state, GAME_STATE_RENEGED);
+}
+
+#[test]
+fn opponent_cannot_renege_before_matching_wager() {
+    let t = GameTest::setup();
+    let game_id = t.client.propose_game(&t.challenger, &t.opponent, &100, &1);
+
+    assert!(t
+        .client
+        .try_opponent_renege_stake(&game_id, &t.opponent, &t.token)
+        .is_err());
+}
+
+#[test]
+fn renege_rejects_non_participant() {
+    let t = GameTest::setup();
+    let game_id = t.client.propose_game(&t.challenger, &t.opponent, &100, &1);
+    let intruder = Address::generate(&t.env);
+
+    assert!(t
+        .client
+        .try_challenger_renege_stake(&game_id, &intruder, &t.token)
+        .is_err());
+}
+
+#[test]
+fn timeout_pays_opponent_after_deadline() {
+    let t = GameTest::setup();
+    t.env.ledger().with_mut(|l| l.timestamp = 1_000_000);
+
+    let game_id = t.propose_and_match(1, 0);
+    t.client.accept_game(&game_id);
+
+    t.env
+        .ledger()
+        .with_mut(|l| l.timestamp = 1_000_000 + TIMEOUT_SECONDS + 1);
+    t.client.finish_game_by_timeout(&game_id, &t.token);
+
+    assert_eq!(t.client.get_game(&game_id).state, GAME_STATE_TIMEOUT);
+}
+
+#[test]
+fn timeout_rejected_before_deadline() {
+    let t = GameTest::setup();
+    t.env.ledger().with_mut(|l| l.timestamp = 1_000_000);
+
+    let game_id = t.propose_and_match(1, 0);
+    t.client.accept_game(&game_id);
+
+    t.env
+        .ledger()
+        .with_mut(|l| l.timestamp = 1_000_000 + TIMEOUT_SECONDS);
+    assert!(t
+        .client
+        .try_finish_game_by_timeout(&game_id, &t.token)
+        .is_err());
+}
+
+#[test]
+fn timeout_requires_accepted_state() {
+    let t = GameTest::setup();
+    let game_id = t.propose_and_match(1, 0);
+
+    t.env
+        .ledger()
+        .with_mut(|l| l.timestamp = TIMEOUT_SECONDS * 10);
+    assert!(t
+        .client
+        .try_finish_game_by_timeout(&game_id, &t.token)
+        .is_err());
 }
 
 #[test]
