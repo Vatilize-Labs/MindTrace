@@ -1,6 +1,5 @@
-# Pinned: soroban-env-common 20.x requires ethnum =1.5.0, which fails to
-# compile on rustc >= 1.97 (transmute in ethnum::error). Bump this together
-# with a soroban-sdk upgrade.
+# Pinned for reproducible contract builds. Safe to bump: since the
+# soroban-sdk 22 upgrade there is no known incompatibility with newer rustc.
 [toolchain]
 channel = "1.95.0"
 targets = ["wasm32-unknown-unknown"]
