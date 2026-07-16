@@ -25,16 +25,7 @@ if ! command -v soroban &> /dev/null; then
     exit 1
 fi
 
-# The contract lives in its own repo: https://github.com/Vatilize-Labs/smart-contract
-# Default: a checkout next to this repo. Override with CONTRACT_DIR.
-CONTRACT_DIR="${CONTRACT_DIR:-../smart-contract}"
-
-if [ ! -f "$CONTRACT_DIR/Cargo.toml" ]; then
-    echo "❌ Contract repo not found at $CONTRACT_DIR"
-    echo "   Clone it with: git clone https://github.com/Vatilize-Labs/smart-contract.git $CONTRACT_DIR"
-    echo "   Or set CONTRACT_DIR to your checkout."
-    exit 1
-fi
+CONTRACT_DIR="smart-contract"
 
 echo "✅ Prerequisites OK"
 echo ""
