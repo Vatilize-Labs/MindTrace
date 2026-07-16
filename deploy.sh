@@ -25,15 +25,26 @@ if ! command -v soroban &> /dev/null; then
     exit 1
 fi
 
+# The contract lives in its own repo: https://github.com/Vatilize-Labs/smart-contract
+# Default: a checkout next to this repo. Override with CONTRACT_DIR.
+CONTRACT_DIR="${CONTRACT_DIR:-../smart-contract}"
+
+if [ ! -f "$CONTRACT_DIR/Cargo.toml" ]; then
+    echo "❌ Contract repo not found at $CONTRACT_DIR"
+    echo "   Clone it with: git clone https://github.com/Vatilize-Labs/smart-contract.git $CONTRACT_DIR"
+    echo "   Or set CONTRACT_DIR to your checkout."
+    exit 1
+fi
+
 echo "✅ Prerequisites OK"
 echo ""
 
 # Step 1: Build
 echo "📦 Step 1: Building WASM binary..."
-cd soroban
+cd "$CONTRACT_DIR"
 cargo build --target wasm32-unknown-unknown --release
-cd ..
-echo "✅ Build complete (12 KB)"
+cd - > /dev/null
+echo "✅ Build complete"
 echo ""
 
 # Step 2: Check if account exists
@@ -85,7 +96,7 @@ echo ""
 # Step 6: Deploy contract
 echo "🚀 Step 6: Deploying contract..."
 CONTRACT_ID=$(soroban contract deploy \
-    --wasm soroban/target/wasm32-unknown-unknown/release/mindtrace_soroban.wasm \
+    --wasm "$CONTRACT_DIR/target/wasm32-unknown-unknown/release/mindtrace_soroban.wasm" \
     --network testnet \
     --source-account "$ACCOUNT_NAME" \
     2>&1 | grep -oP 'Contract ID: \K[^ ]+' || echo "")
