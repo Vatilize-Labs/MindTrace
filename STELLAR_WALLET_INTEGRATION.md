@@ -1,9 +1,8 @@
 # Stellar Wallet Integration Guide
 
-> **Note:** The Soroban contract has moved to its own repository:
-> <https://github.com/Vatilize-Labs/smart-contract>. Contract build/deploy
-> commands below run from that repo's root — paths like `soroban/` or
-> `cd soroban` refer to the old monorepo layout.
+> **Note:** The Soroban contract now lives in this repo's `smart-contract/`
+> directory (previously `soroban/`). Where commands below reference
+> `soroban/` or `cd soroban`, use `smart-contract/` instead.
 
 
 ## Overview
